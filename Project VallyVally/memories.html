@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Memories 💞</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(90,0,20,0.85), rgba(90,0,20,0.85)),
+    url("background.jpg") center/cover no-repeat;
+  color: white;
+  overflow-x: hidden;
+}
+h1 { text-align: center; margin: 30px 0 40px; }
+
+/* ===== GRID ===== */
+.memories { display: grid; grid-template-columns: repeat(2, 1fr); gap: 35px; width: 90%; max-width: 1100px; margin: auto; }
+
+/* ===== CARD ===== */
+.card { perspective: 1200px; }
+.card-inner { height: 400px; position: relative; transform-style: preserve-3d; transition: transform 0.9s ease; cursor: pointer; }
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.face { position: absolute; inset: 0; border-radius: 22px; padding: 22px; backface-visibility: hidden; box-shadow: 0 25px 45px rgba(0,0,0,0.4); display: flex; flex-direction: column; justify-content: flex-start; overflow: hidden; }
+.front { background: #ffe3ea; color: #7a0019; font-weight: 600; font-size: 16px; text-align: left; overflow-y: auto; }
+.back { background: white; transform: rotateY(180deg); padding: 0; }
+.back img, .back.two img { width: 100%; height: 100%; object-fit: contain; background: rgba(90,0,20,0.85); border-radius: 16px; }
+.back.two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border: 4px solid #ff4d6d; border-radius: 18px; padding: 0; }
+
+/* ===== EMOJIS ===== */
+.emoji { position: absolute; bottom: -30px; font-size: 26px; animation: floatUp 4s ease forwards; }
+@keyframes floatUp { to { transform: translateY(-120vh); opacity: 0; } }
+
+/* ===== BUTTON ===== */
+.menu-btn { display: block; width: fit-content; margin: 50px auto; background: white; color: #8b001e; padding: 10px 26px; border-radius: 25px; text-decoration: none; font-weight: 600; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 800px) { .memories { grid-template-columns: 1fr; } }
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<audio id="site-music" loop>
+  <source src="Images/So Easy (To Fall In Love) - Olivia Dean.mp3" type="audio/mpeg">
+</audio>
+
+<h1>Our Memories 📸</h1>
+
+<div class="memories">
+  <!-- 1 Window Shopping -->
+  <div class="card" onclick="flip(this)">
+    <div class="card-inner">
+      <div class="face front">
+        🛍️ One of Our First Memories<br><br>
+        This was one of the first moments I realised, “Oh wow… this is really happening.” Standing next to you felt natural — like something I’d been waiting for without knowing.
+      </div>
+      <div class="face back">
+        <img src="Images/us.jpg" alt="First shopping picture">
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 Lions Park -->
+  <div class="card" onclick="flip(this)">
+    <div class="card-inner">
+      <div class="face front">
+        🦁 Lions Park — Your Birthday<br><br>
+        This was your day, and somehow you still managed to make *me* the lucky one. You stood there staring at a lion like it was the most fascinating thing in the world… but let’s be honest — you were probably admiring me 😌
+      </div>
+      <div class="face back">
+        <img src="Images/LionsPark.jpg" alt="Lions Park">
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 Match Day -->
+  <div class="card" onclick="flip(this)">
+    <div class="card-inner">
+      <div class="face front">
+        ⚽ Match Day<br><br>
+        We lost that match, yes. But I won something way bigger — seeing you wearing my jersey, claiming my team, my space, my heart. I’d lose every derby again for that.
+      </div>
+      <div class="face back">
+        <img src="Images/Man City game.jpg" alt="Football watching">
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 FIFA Night -->
+  <div class="card" onclick="flip(this)">
+    <div class="card-inner">
+      <div class="face front">
+        🎮 FIFA Night<br><br>
+        Controllers were exchanged, tempers were tested, and someone was definitely not nice when losing 😌 But even then, I remember thinking — “I want more nights like this.”
+      </div>
+      <div class="face back">
+        <img src="Images/FIFA.jpg" alt="FIFA night">
+      </div>
+    </div>
+  </div>
+
+  <!-- 5a Birthday Cake -->
+  <div class="card" onclick="flip(this)">
+    <div class="card-inner">
+      <div class="face front">
+        🎂 Birthday Cake<br><br>
+        Seeing this cake reminded me how sweet life is with you. Every layer, every detail — just like every moment we share — made with love and care, just for us.
+      </div>
+      <div class="face back">
+        <img src="Images/Cake.jpg" alt="Birthday cake">
+      </div>
+    </div>
+  </div>
+
+  <!-- 5b Birthday Dinner -->
+  <div class="card" onclick="flip(this)">
+    <div class="card-inner">
+      <div class="face front">
+        🍽️ Birthday Dinner<br><br>
+        That dinner was more than food — it was warmth, laughter, and your love filling the room. Every bite reminded me how lucky I am to have you.
+      </div>
+      <div class="face back">
+        <img src="Images/My Birthday.jpg" alt="Birthday dinner">
+      </div>
+    </div>
+  </div>
+</div>
+
+<a href="menu.html" class="menu-btn">← Back to Menu</a>
+
+<script>
+function flip(card) { card.classList.toggle('flipped'); }
+
+/* MEMORY EMOJIS – ONCE */
+const emojis = ['📸','💞','✨','💖'];
+for (let i = 0; i < 18; i++) {
+  const e = document.createElement('div');
+  e.className = 'emoji';
+  e.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+  e.style.left = Math.random() * 100 + 'vw';
+  e.style.animationDelay = Math.random() * 1.2 + 's';
+  document.body.appendChild(e);
+  setTimeout(() => e.remove(), 4500);
+}
+
+/* CONTINUOUS MUSIC ACROSS PAGES */
+const music = document.getElementById('site-music');
+let lastTime = localStorage.getItem('musicTime') || 0;
+music.currentTime = lastTime;
+
+let musicStarted = false;
+document.body.addEventListener('click', () => {
+  if (!musicStarted) {
+    music.play().catch(() => {});
+    musicStarted = true;
+  }
+});
+
+setInterval(() => {
+  if (!music.paused) localStorage.setItem('musicTime', music.currentTime);
+}, 1000);
+
+window.addEventListener('load', () => music.play().catch(() => {}));
+</script>
+
+</body>
+</html>

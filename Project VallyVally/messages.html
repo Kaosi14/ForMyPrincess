@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Messages 💌</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(90,0,20,0.85), rgba(90,0,20,0.85)),
+    url("background.jpg") center/cover no-repeat;
+  padding: 40px 20px;
+}
+
+/* container */
+.container {
+  max-width: 700px;
+  margin: auto;
+  text-align: center;
+}
+
+/* title */
+h1 { color: white; margin-bottom: 30px; }
+
+/* card wrapper */
+.card { perspective: 1200px; margin: 25px 0; }
+
+/* flippable card */
+.card-inner {
+  width: 100%;
+  min-height: 200px;
+  transition: transform 0.8s ease;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  position: relative;
+}
+
+.card.flipped .card-inner { transform: rotateY(180deg); }
+
+/* card sides */
+.card-face {
+  position: absolute;
+  inset: 0;
+  background: #fff3f6;
+  border-radius: 25px;
+  padding: 30px;
+  backface-visibility: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-front { font-size: 22px; color: #8b001e; font-weight: 600; gap: 10px; }
+.card-back {
+  transform: rotateY(180deg);
+  font-size: 15px;
+  line-height: 1.6;
+  color: #5a0f1b;
+  text-align: left;
+  overflow-y: auto;
+}
+
+/* back button */
+.back-btn {
+  margin-top: 35px;
+  display: inline-block;
+  background: #fff3f6;
+  padding: 14px 30px;
+  border-radius: 30px;
+  text-decoration: none;
+  color: #8b001e;
+  font-weight: 500;
+}
+
+/* floating emojis */
+.emoji {
+  position: fixed;
+  bottom: -30px;
+  font-size: 26px;
+  animation: floatUp 4s ease forwards;
+}
+
+@keyframes floatUp {
+  to { transform: translateY(-120vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<audio id="site-music" loop>
+  <source src="Images/So Easy (To Fall In Love) - Olivia Dean.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+  <h1>💌 Messages From My Heart</h1>
+
+  <!-- Card 1 -->
+  <div class="card" onclick="this.classList.toggle('flipped')">
+    <div class="card-inner">
+      <div class="card-face card-front">💌 Click Me 🥺</div>
+      <div class="card-face card-back">
+        This is the part of our story where everything felt light, warm, and easy.  
+        I loved you when we laughed endlessly, when your smile made my bad days disappear, and when just being around you felt like home.  
+        I loved how you looked at me, how you spoke to me, how your presence alone changed my mood.  
+        Those moments where everything felt perfect weren’t fake — they were real, and I still carry them with me.  
+        Loving you during our good times came so naturally, so effortlessly, and I cherish those moments deeply.
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 2 -->
+  <div class="card" onclick="this.classList.toggle('flipped')">
+    <div class="card-inner">
+      <div class="card-face card-front">💬 Click Me 🥺</div>
+      <div class="card-face card-back">
+        This part hasn’t been easy… not at all.  
+        We’ve argued, misunderstood each other, and hurt one another in ways we never meant to.  
+        I won’t pretend I was always kind or perfect — I wasn’t.  
+        But even in the chaos, even in the pain, something kept pulling us back together.  
+        We survived moments that could’ve ended us, and the fact that we’re still here says more than words ever could.
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3 -->
+  <div class="card" onclick="this.classList.toggle('flipped')">
+    <div class="card-inner">
+      <div class="card-face card-front">❤️ Click Me 🥺</div>
+      <div class="card-face card-back">
+        This is the phase where I choose you — not because it’s easy, but because it’s worth it.  
+        I want to grow with you, learn with you, and love you even when things aren’t perfect.  
+        I’m willing to fight for us, to communicate better, to be better — because being with you matters to me deeply.  
+        I don’t just want moments with you… I want a future.  
+        I want to be stuck with you, choosing you every day, for as long as you’ll let me.
+      </div>
+    </div>
+  </div>
+
+  <a href="menu.html" class="back-btn">⬅ Back to Menu</a>
+</div>
+
+<script>
+// emojis float ONCE on page load
+const emojis = ["💌", "💬", "❤️"];
+for (let i = 0; i < 18; i++) {
+  setTimeout(() => {
+    const e = document.createElement("div");
+    e.className = "emoji";
+    e.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    e.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(e);
+    setTimeout(() => e.remove(), 4000);
+  }, i * 150);
+}
+
+// CONTINUOUS MUSIC ACROSS PAGES
+const music = document.getElementById('site-music');
+
+// Load last position from localStorage
+let lastTime = localStorage.getItem('musicTime') || 0;
+music.currentTime = lastTime;
+
+// Play music on first click (for autoplay policies)
+let musicStarted = false;
+document.body.addEventListener('click', () => {
+  if (!musicStarted) {
+    music.play().catch(() => {});
+    musicStarted = true;
+  }
+});
+
+// Save position every second
+setInterval(() => {
+  if (!music.paused) localStorage.setItem('musicTime', music.currentTime);
+}, 1000);
+
+// Optional auto-play on load if browser allows
+window.addEventListener('load', () => music.play().catch(() => {}));
+</script>
+
+</body>
+</html>

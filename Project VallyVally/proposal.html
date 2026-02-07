@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+* { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(120,0,30,0.7), rgba(255,70,100,0.75)),
+    url("background.jpg") center/cover no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* CARD */
+.card {
+  background: #fff3f6;
+  width: 90%;
+  max-width: 560px;
+  padding: 45px 35px;
+  border-radius: 30px;
+  text-align: center;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.4);
+  position: relative;
+}
+
+h1 { color: #8b001e; font-size: 28px; margin-bottom: 30px; }
+
+/* OPTIONS */
+.option {
+  background: white;
+  color: #5a0f1b;
+  padding: 16px;
+  margin: 14px 0;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.25s ease;
+}
+.option:hover { transform: translateY(-4px); box-shadow: 0 12px 25px rgba(0,0,0,0.2); }
+
+/* HIDDEN UTILITY */
+.hidden { display: none !important; }
+
+/* BUTTONS */
+button { padding: 15px 34px; border-radius: 40px; border: none; font-size: 16px; cursor: pointer; margin: 12px; }
+#yesBtn { background: #ff3b5c; color: white; }
+#noBtn { background: #ffe0e6; color: #8b001e; position: absolute; }
+
+/* YES OVERLAY */
+#yesOverlay {
+  display: none;
+  position: fixed; inset: 0;
+  background:
+    linear-gradient(rgba(255,80,110,0.95), rgba(120,0,30,0.95)),
+    url("background.jpg") center/cover no-repeat;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+#yesOverlay.active { display: flex; }
+
+.yesMessage {
+  color: white;
+  font-size: 48px;
+  font-weight: 600;
+  text-align: center;
+  animation: popIn 1.2s ease forwards;
+  text-shadow: 0 20px 50px rgba(0,0,0,0.6);
+}
+@keyframes popIn { 0% { transform: scale(0.3); opacity: 0; } 70% { transform: scale(1.15); } 100% { transform: scale(1); opacity: 1; } }
+
+/* HEARTS */
+.heart {
+  position: fixed;
+  bottom: -30px;
+  font-size: 26px;
+  animation: floatUp 4s ease forwards;
+}
+@keyframes floatUp { to { transform: translateY(-120vh); opacity: 0; } }
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<audio id="site-music" loop>
+  <source src="Images/So Easy (To Fall In Love) - Olivia Dean.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card" id="proposalCard">
+  <h1>💌 Do you know what day it is?</h1>
+
+  <div id="answers">
+    <div class="option" onclick="startProposal()">The day we officially became us 💖</div>
+    <div class="option" onclick="startProposal()">Our one-month love milestone 🗓️✨</div>
+    <div class="option" onclick="startProposal()">Thirty days of choosing each other 🥰</div>
+  </div>
+
+  <div id="proposal" class="hidden">
+    <h1>So.. will you be my Valentine Baby Girl? 💘</h1>
+    <button id="yesBtn" onclick="yesClicked()">YES ❤️</button>
+    <button id="noBtn" onmouseover="moveNo()" onclick="shrinkNo()">NO 🙃</button>
+  </div>
+</div>
+
+<!-- YES MESSAGE OVERLAY -->
+<div id="yesOverlay">
+  <div class="yesMessage">I knew you’d say YES ❤️</div>
+</div>
+
+<script>
+let noClicks = 0;
+
+function startProposal() {
+  document.getElementById("answers").classList.add("hidden");
+  document.getElementById("proposal").classList.remove("hidden");
+}
+
+function moveNo() {
+  const btn = document.getElementById("noBtn");
+  btn.style.left = Math.random() * 70 + "%";
+  btn.style.top = Math.random() * 70 + "%";
+}
+
+function shrinkNo() {
+  noClicks++;
+  const btn = document.getElementById("noBtn");
+  btn.style.transform = `scale(${1 - noClicks * 0.15})`;
+  if (noClicks >= 4) btn.style.display = "none";
+}
+
+function yesClicked() {
+  // Hide the card completely
+  document.getElementById("proposalCard").style.display = "none";
+
+  // Show YES overlay
+  const overlay = document.getElementById("yesOverlay");
+  overlay.classList.add("active");
+
+  // Floating hearts
+  for (let i = 0; i < 18; i++) setTimeout(createHeart, i * 180);
+
+  // Redirect after a few seconds
+  setTimeout(() => {
+    window.location.href = "menu.html";
+  }, 4200);
+}
+
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 4000);
+}
+
+// CONTINUOUS MUSIC ACROSS PAGES
+const music = document.getElementById('site-music');
+
+// Load last position
+let lastTime = localStorage.getItem('musicTime') || 0;
+music.currentTime = lastTime;
+
+// Play music on first interaction (or load if allowed)
+let musicStarted = false;
+function startMusic() {
+  if (!musicStarted) {
+    music.play().catch(() => {});
+    musicStarted = true;
+  }
+}
+document.body.addEventListener('click', startMusic);
+
+// Save position every second
+setInterval(() => {
+  if (!music.paused) localStorage.setItem('musicTime', music.currentTime);
+}, 1000);
+
+// Optional auto-play on load if allowed
+window.addEventListener('load', () => music.play().catch(() => {}));
+</script>
+
+</body>
+</html>
